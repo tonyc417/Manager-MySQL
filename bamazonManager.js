@@ -115,7 +115,7 @@ newItem = () => {
         }
         ]).then(function(result) {
         var sql = `INSERT INTO products (product_name, department_name, price, stock_quantity)
-                   VALUES (${result.name}, ${result.department}, ${result.price}, ${result.stock})`;
+                   VALUES ('${result.name}', '${result.department}', '${result.price}', '${result.stock}')`;
         console.log(sql);
         connection.query(sql, (err, res) => {
             if (err) throw err;
