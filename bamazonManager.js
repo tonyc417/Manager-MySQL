@@ -45,7 +45,6 @@ runSearch = () => {
         break;
 
     }
-    connection.end();
 })};
 
 checkInventory = () => {
@@ -72,11 +71,56 @@ lowStock = () => {
 }
 
 addMore = () => {
-    connect.query('INSERT INTO products', (err, res) => {
-
+    inquirer.prompt([{
+        type: 'input',
+        name: 'itemID',
+        message: 'Please enter the ID for the new item to restock'
+    },
+    {
+        type: 'input',
+        name: 'newStock',
+        message: 'What is the new amount avaiable?'
+    }    
+]).then(function(answer) {
+    var sql = `UPDATE products SET stock_quantity ='${answer.newStock}' WHERE item_id = '${answer.itemID}'`;
+    connect.query(sql, (err, res) => {
+    if (err) throw err;
+    console.log("Updated" + res);
+    connection.end();
     })
-}
+    })
+};
 
 newItem = () => {
+    inquirer.prompt([{
+        type: 'input',
+        name: 'name',
+        message: 'What new item would you like to add'
+        },
+        {
+        type: 'input',
+        name: 'department',
+        message: 'Which department would you like to add it in?'
+        },
+        {
+        type: 'input',
+        name: 'price',
+        message: 'What is the price?'
+        },
+        {
+        type: 'input',
+        name: 'stock',
+        message: 'How many are avaiable?'
+        }
+        ]).then(function(result) {
+        var sql = `INSERT INTO products (product_name, department_name, price, stock_quantity)
+                   VALUES (${result.name}, ${result.department}, ${result.price}, ${result.stock});`;
+        console.log(sql);
+        connect.query(sql, (err, res) => {
+            if (err) throw err;
+            console.log("Updated" + res);
+            connection.end();
+        })
+    })
 
 }
