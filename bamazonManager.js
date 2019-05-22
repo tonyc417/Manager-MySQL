@@ -83,9 +83,10 @@ addMore = () => {
     }    
 ]).then(function(answer) {
     var sql = `UPDATE products SET stock_quantity ='${answer.newStock}' WHERE item_id = '${answer.itemID}'`;
-    connect.query(sql, (err, res) => {
+    connection.query(sql, (err, res) => {
+        console.log(sql);
     if (err) throw err;
-    console.log("Updated" + res);
+    console.log("The Item ID:" + answer.itemID + " was succesfuly updated");
     connection.end();
     })
     })
@@ -114,11 +115,11 @@ newItem = () => {
         }
         ]).then(function(result) {
         var sql = `INSERT INTO products (product_name, department_name, price, stock_quantity)
-                   VALUES (${result.name}, ${result.department}, ${result.price}, ${result.stock});`;
+                   VALUES (${result.name}, ${result.department}, ${result.price}, ${result.stock})`;
         console.log(sql);
-        connect.query(sql, (err, res) => {
+        connection.query(sql, (err, res) => {
             if (err) throw err;
-            console.log("Updated" + res);
+            console.log("Updated");
             connection.end();
         })
     })
